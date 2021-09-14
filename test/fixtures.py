@@ -8,7 +8,6 @@ import yaml
 @fixture
 def config():
     # Quick and very, very dirty config loader
-    print(f'Loading the config from: {os.path.curdir}')
     try:
         with open('../config.yaml', 'r') as config_file:
             config = yaml.load(config_file)
@@ -22,7 +21,7 @@ def config():
                 'lat': 37.3861,
                 'lon': -122.0838
             },
-            'api_key': 'NoValid API Key Given!'
+            'api_key': '' # Tests WILL fail. That is the intended behavior.
         }
 
 
@@ -43,8 +42,10 @@ def api_key(config):
 @fixture
 def data_by_city(city_info, api_key):
     eggs = Weatherest(api_key)
-    result = eggs.current_weather_by_city(city_info['name'], region=city_info['region'],
-                                          country=city_info['country'])
+    result = eggs.current_weather_by_city(city_info['name'],
+                                          region=city_info['region'],
+                                          country=city_info['country']
+                                          )
     yield result.status_code, result.json()
     print('Finished the test')
     result = None
