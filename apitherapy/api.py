@@ -21,6 +21,8 @@ class Api:
     def add_param(self, param_name, param_value):
         if param_name not in self._params:
             return self
+        if param_value is None:
+            return self
         self._params[param_name] = param_value
         if self._request_string is None:
             self._request_string = f'?{param_name}={param_value}'
